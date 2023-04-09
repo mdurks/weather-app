@@ -29,13 +29,13 @@ const CurrentDayInfo = ({data, locations, currentLocation, setCurrentLocation}) 
     const isPreviousBtnDisabled = selectedIndex === 0 ? true : false
     const isNextBtnDisabled = selectedIndex < locations.length -1 ? false : true
 
+    const handleGoPrevious = () => setCurrentLocation(locations[selectedIndex - 1])
+    const handleGoNext = () => setCurrentLocation(locations[selectedIndex + 1])
+
     const handleSelect = (e) => {
         const locationName = e.target.value
         setCurrentLocation(locations.find(location => location.value === locationName))
     }
-
-    const handleGoPrevious = () => setCurrentLocation(locations[selectedIndex - 1])
-    const handleGoNext = () => setCurrentLocation(locations[selectedIndex + 1])
 
     return (
         <CurrentDayInfoWrapper>
@@ -84,7 +84,6 @@ const CurrentDayInfo = ({data, locations, currentLocation, setCurrentLocation}) 
                         />
                     </LocationChevBtn>
                 </LocationWrapper>
-
             </TitleWrapper>
             <ContentWrapper>
                 <TitleWeatherSummary>

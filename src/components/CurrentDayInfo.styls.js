@@ -75,6 +75,7 @@ export const TitleHeading = styled.h1`
 export const LocationWrapper = styled.div`
     display: flex;
     justify-content: center;
+    margin: 0 0 10px;
 `
 
 export const LocationSelect = styled.select`
@@ -153,7 +154,7 @@ export const WindDirection = styled.span`
 
 export const WeatherIcon = styled.div`
     width: 55%;
-    margin: 0 auto -80px;
+    margin: 0 auto -60px;
 
     img {
         width: 100%;

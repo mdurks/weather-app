@@ -5,7 +5,6 @@ export const SelectedDayInfoWrapper = styled.div`
     width: 100%;
     max-width: 1040px;
     margin: auto;
-    padding: 0 0 20px;
     text-align: center;
 
     ${mediaQuery.min_tablet} {
