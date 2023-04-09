@@ -6,7 +6,9 @@ import {
     WeatherIcon,
     TitleWrapper,
     TitleHeading,
+    LocationWrapper,
     LocationSelect,
+    LocationChevBtn,
     TitleDay,
     TitleDate,
     TitleWeatherSummary,
@@ -18,13 +20,22 @@ import {
 } from './CurrentDayInfo.styls'
 
 import CompassSVG from '../images/compass.svg'
+import ChevronSVG from '../images/chevron.svg'
 
-const CurrentDayInfo = ({data, locations, setCurrentLocation}) => {
+const CurrentDayInfo = ({data, locations, currentLocation, setCurrentLocation}) => {
     const { current_weather, daily_units} = data
+
+    const selectedIndex = locations.findIndex((item) => item.value === currentLocation.value)
+    const isPreviousBtnDisabled = selectedIndex === 0 ? true : false
+    const isNextBtnDisabled = selectedIndex < locations.length -1 ? false : true
+
     const handleSelect = (e) => {
         const locationName = e.target.value
         setCurrentLocation(locations.find(location => location.value === locationName))
     }
+
+    const handleGoPrevious = () => setCurrentLocation(locations[selectedIndex - 1])
+    const handleGoNext = () => setCurrentLocation(locations[selectedIndex + 1])
 
     return (
         <CurrentDayInfoWrapper>
@@ -36,18 +47,44 @@ const CurrentDayInfo = ({data, locations, setCurrentLocation}) => {
                     <TitleDay>{returnDayName(current_weather.time)}</TitleDay>
                     <TitleDate>{getDateDDMMYYYString(current_weather.time)}</TitleDate>
                 </TitleHeading>
-                <LocationSelect onChange={handleSelect}>
-                    {
-                        locations.map(location => (
-                            <option
-                                key={location.value}
-                                value={location.value}
-                            >
-                                {location.value}
-                            </option>
-                        ))
-                    }
-                </LocationSelect>
+                <LocationWrapper>
+                    <LocationChevBtn
+                        type="button"
+                        onClick={handleGoPrevious}
+                        disabled={isPreviousBtnDisabled}
+                    >
+                        <img
+                            src={ChevronSVG}
+                            alt="Previous location"
+                        />
+                    </LocationChevBtn>
+                    <LocationSelect
+                        value={currentLocation.value}
+                        onChange={handleSelect}
+                    >
+                        {
+                            locations.map(location => (
+                                <option
+                                    key={location.value}
+                                    value={location.value}
+                                >
+                                    {location.value}
+                                </option>
+                            ))
+                        }
+                    </LocationSelect>
+                    <LocationChevBtn
+                        type="button"
+                        onClick={handleGoNext}
+                        disabled={isNextBtnDisabled}
+                    >
+                        <img
+                            src={ChevronSVG}
+                            alt="Next location"
+                        />
+                    </LocationChevBtn>
+                </LocationWrapper>
+
             </TitleWrapper>
             <ContentWrapper>
                 <TitleWeatherSummary>

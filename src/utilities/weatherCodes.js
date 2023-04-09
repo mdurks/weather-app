@@ -1,18 +1,3 @@
-
-// const clearSky = '☀'
-// const mainlyClear = '🌥'
-// const fog = '🌫'
-// const drizzle = '🌧'
-// const freezingDrizzle = '🌨'
-// const rain = '🌧'
-// const freezingRain = '🌧'
-// const snowFall = '🌨'
-// const snowGrains = '🌨'
-// const rainShowers = '🌧'
-// const snowShowers = '🌨'
-// const thunderstorm = '🌩'
-// const thunderstormHail = '🌩'
-
 import img_sunny from '../images/sunny.png';
 import img_sunnyToCloudy from '../images/sunny to cloudy.png';
 import img_fog from '../images/fog.png';

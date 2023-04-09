@@ -1,6 +1,5 @@
 import * as d3 from "d3";
 import { motion } from "framer-motion";
-import { weatherCodes } from '../utilities/weatherCodes'
 
 import {
 	LineChartWrapper,
@@ -9,7 +8,7 @@ import {
 
 const ChartInner = ({data}) => {
 	const {hourly} = data
-	const {temperature_2m, time, weathercode} = hourly
+	const {temperature_2m, time} = hourly
 
 	const svgOpt = {
 		width: 1040,
@@ -84,18 +83,6 @@ const ChartInner = ({data}) => {
 						>
 							{hourlyTempData[index].temperature}
 						</motion.text>
-						<image
-							// initial={{ opacity: 0, x: 10 }}
-							// animate={{ opacity: 1, x: 0 }}
-							// transition={{ duration: 0.5, delay: 0.05 * index }}
-							className='weatherIcon'
-							x={xScale(time.date)}
-							y={svgOpt.height - 60}
-							// fill="white"
-							// textAnchor='middle'
-						>
-							{ weathercode[index-1] !== weathercode[index] && weatherCodes[weathercode[index]] }
-						</image>
 						<text
 							x={xScale(time.date)}
 							y={svgOpt.height - 20}

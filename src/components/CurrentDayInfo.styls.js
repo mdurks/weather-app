@@ -15,7 +15,7 @@ export const CurrentDayInfoWrapper = styled.div`
 
     ${mediaQuery.min_tablet} {
         flex-direction: row;
-        padding: 20px 120px 40px;
+        padding: 20px 9% 40px;
     }
 `
 
@@ -72,14 +72,53 @@ export const WeatherUnit = styled.span`
 export const TitleHeading = styled.h1`
 `
 
+export const LocationWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+`
+
 export const LocationSelect = styled.select`
-    width: 75%;
+    flex: 1 1 auto;
+    width: 55%;
+    margin: 0 10px;
     padding: 12px 10px;
     border-radius: 8px;
     border: none;
+    background: #ffffff40;
+    color: white;
+    font-size: 18px;
+    text-align: center;
 
     ${mediaQuery.min_tablet} {
-        padding: 7px 10px;
+        padding: 11px 10px;
+    }
+
+    option {
+        background: #0064a7;
+        color: white;
+    }
+`
+
+export const LocationChevBtn = styled.button`
+    padding: 5px;
+    width: 50px;
+    height: 50px;
+    border: none;
+    background: none;
+    -webkit-tap-highlight-color: transparent;
+
+    &:first-of-type img {
+        transform: rotate(180deg);
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+        transition: all ease .5s;
+    }
+
+    &[disabled] img {
+        opacity: 0.3;
     }
 `
 
