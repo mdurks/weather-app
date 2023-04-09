@@ -1,0 +1,15 @@
+export const locations = [
+    { value: "London", latitude: "51.50", longitude: "0.12"},
+    { value: "Paris", latitude: "48.85", longitude: "2.35"},
+    { value: "Rome", latitude: "41.90", longitude: "12.49"},
+    { value: "Karachi", latitude: "24.86", longitude: "67.00"},
+    { value: "Dhaka", latitude: "23.81", longitude: "90.41"},
+    { value: "Bangkok", latitude: "13.75", longitude: "100.50"},
+    { value: "Hong Kong", latitude: "22.31", longitude: "114.16"},
+    { value: "Manila", latitude: "14.59", longitude: "120.98"},
+    { value: "Perth", latitude: "31.95", longitude: "115.86"},
+    { value: "Tokyo", latitude: "35.67", longitude: "139.65"},
+    { value: "Los Angeles", latitude: "34.05", longitude: "118.24"},
+    { value: "New York", latitude: "40.71", longitude: "74.00"},
+    { value: "Sao Paulo", latitude: "23.55", longitude: "46.63"},
+]

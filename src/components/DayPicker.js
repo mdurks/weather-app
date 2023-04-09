@@ -1,36 +1,59 @@
-import { motion } from 'framer-motion'
+import { useState } from 'react'
 import { returnDayName } from '../utilities/dates'
 import { weatherCodes } from '../utilities/weatherCodes'
 import { getWeatherDayData } from '../utilities/getWeatherData'
 
-const DayPicker = ({weekData, setWeatherData}) => {
+import {
+    DayPickerWrapper,
+    ButtonContainer,
+    DayButton,
+    WeatherImg,
+    DayText,
+    TemperatureWrapper,
+    TempHigh,
+    TempLow,
+    TempUnit,
+} from './DayPicker.styles'
+
+const DayPicker = ({weekData, setWeatherData, setSelectedDay, currentLocation}) => {
     const { daily, daily_units } = weekData
     const { time, temperature_2m_min, temperature_2m_max, weathercode } = daily
+    const [selectedButton, setSelectedButton] = useState(0)
 
-    const handleClick = (time) => {
-		getWeatherDayData(time, setWeatherData)
+    const handlePickADay = (day, index) => {
+		getWeatherDayData(day, setWeatherData, currentLocation)
+        setSelectedDay(day)
+        setSelectedButton(index)
     }
 
     return (
-        <div>
+        <DayPickerWrapper>
+            <ButtonContainer>
             {time.map((day, index) => (
-                <button
+                <DayButton
                     key={day}
                     type="button"
-                    onClick={() => handleClick(day)}
+                    onClick={() => handlePickADay(day, index)}
+                    className={selectedButton === index && 'activeButton'}
                 >
-                    <div>{returnDayName(day)}</div>
-                    <div>{weatherCodes[weathercode[index]]}</div>
-                    {`
-                        ${temperature_2m_max[index]} to
-                        ${temperature_2m_min[index]}
-                    `}
-                </button>
+                    <WeatherImg>{weatherCodes[weathercode[index]]}</WeatherImg>
+                    <DayText>{returnDayName(day)}</DayText>
+                    <TemperatureWrapper>
+                        <TempHigh>
+                            {Math.round(temperature_2m_max[index])}
+                            <TempUnit>{daily_units.temperature_2m_max}</TempUnit>
+                        </TempHigh>
+                        <TempLow>
+                            {Math.round(temperature_2m_min[index])}
+                            <TempUnit>{daily_units.temperature_2m_max}</TempUnit>
+                        </TempLow>
+                    </TemperatureWrapper>
+                </DayButton>
                 ))
             }
-        </div>
+            </ButtonContainer>
+        </DayPickerWrapper>
     )
-
 }
 
 export default DayPicker

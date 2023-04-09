@@ -1,35 +1,28 @@
 import { useEffect, useState } from 'react';
-// import { motion } from "framer-motion";
 
 import CurrentDayInfo from './components/CurrentDayInfo';
 import LineChart from './components/LineChart';
 import DayPicker from './components/DayPicker';
 import SelectedDayInfo from './components/SelectedDayInfo'
 
-import { getWeatherData } from './utilities/getWeatherData';
+import { getWeatherData, getWeatherDayData } from './utilities/getWeatherData';
+import { locations } from './utilities/locations'
+import { formatDate } from './utilities/dates'
 
 import './App.css';
 
 function App() {
 
+	const todaysDate = formatDate(new Date())
+	const [selectedDay, setSelectedDay] = useState(todaysDate)
 	const [weatherData, setWeatherData] = useState()
-	// eslint-disable-next-line no-unused-vars
 	const [weatherWeekData, setWeatherWeekData] = useState()
-
-	const svgLineChartOpt = {
-		width: 800,
-		height: 270,
-		margin: {
-			top: 50,
-			right: 20,
-			bottom: 120,
-			left: 30,
-		}
-	}
+    const [currentLocation, setCurrentLocation] = useState(locations[0])
 
 	useEffect(() => {
-		getWeatherData(new Date(), setWeatherData, setWeatherWeekData)
-	}, [])
+		getWeatherData(new Date(), setWeatherData, setWeatherWeekData, currentLocation)
+		getWeatherDayData(selectedDay, setWeatherData, currentLocation)
+	}, [currentLocation, selectedDay])
 
 	return (
 		<>
@@ -37,20 +30,24 @@ function App() {
 				<CurrentDayInfo
 					key={`CurrentDayInfo${weatherData}`}
 					data={weatherData.data}
-					/>
+					locations={locations}
+					currentLocation={currentLocation}
+					setCurrentLocation={setCurrentLocation}
+				/>
 			)}
 			{weatherWeekData && (
 				<DayPicker
 					key={`DayPicker${weatherWeekData}`}
 					weekData={weatherWeekData.data}
 					setWeatherData={setWeatherData}
+					setSelectedDay={setSelectedDay}
+					currentLocation={currentLocation}
 				/>
 			)}
 			{weatherData && (
 				<LineChart
-					key={weatherData.data}
+					key={selectedDay}
 					data={weatherData.data}
-					svgOpt={svgLineChartOpt}
 				/>
 			)}
 			{weatherData && (

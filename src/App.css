@@ -1,6 +1,20 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: rgb(0 100 167);
+}
 body {
-  background: grey;
-  padding: 50px;
+  padding: 20px;
+  background: linear-gradient(164deg, rgba(51, 188, 226, 1) 0%, rgb(0 100 167) 80%);
+  color: white;
+}
+
+@media only screen and (min-width: 768px) {
+  body {
+    padding: 50px;
+  }
 }
 
 svg {
@@ -8,12 +22,20 @@ svg {
 }
 
 svg text {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: bold;
 }
 
 svg text.weatherIcon {
   font-size: 40px;
+}
+
+svg .circleChart__numberValue {
+  font-size: 25px;
+}
+
+svg .circleChart__label {
+  font-size: 18px;
 }
 
 button {

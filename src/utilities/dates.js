@@ -57,3 +57,12 @@ export const getDateString = (date) => {
         ${newDate.getFullYear()}
     `
 }
+
+export const getDateDDMMYYYString = (date) => {
+    const newDate = new Date(date)
+    return `
+        ${newDate.getDate()}
+        ${returnMonthName(newDate)}
+        ${newDate.getFullYear()}
+    `
+}
