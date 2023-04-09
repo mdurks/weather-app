@@ -55,6 +55,20 @@ export const SvgWrapper = styled.div`
         flex: auto;
         padding: 100px 0px 0px;
     }
+
+    svg {
+        overflow: visible;
+
+        .circleChart__numberValue {
+            font-weight: bold;
+            font-size: 25px;
+        }
+
+        .circleChart__label {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    }
 `
 
 export const DetailsItem = styled.p`

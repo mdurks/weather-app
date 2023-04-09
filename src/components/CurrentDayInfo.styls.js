@@ -65,13 +65,16 @@ export const ContentValue = styled.p`
     }
 `
 
+export const WeatherUnit = styled.span`
+    font-size: 12px;
+`
+
 export const TitleHeading = styled.h1`
 `
 
 export const LocationSelect = styled.select`
     width: 75%;
     padding: 12px 10px;
-    cursor: pointer;
     border-radius: 8px;
     border: none;
 
@@ -89,6 +92,21 @@ export const TitleDate = styled.div`
 `
 
 export const TitleWeatherSummary = styled.p`
+    flex: 1 0 100%;
+    font-weight: bold;
+`
+
+export const WindDirection = styled.span`
+    flex: 1 1 50%;
+    padding: 0 0 0 5px;
+    text-align: left;
+
+    img {
+        width: 40px;
+        height: 40px;
+        rotate: ${props => props.windDirection}deg;
+        transition: all ease .75s;
+    }
 `
 
 export const WeatherIcon = styled.div`

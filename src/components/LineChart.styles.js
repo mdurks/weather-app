@@ -13,6 +13,12 @@ export const LineChartWrapper = styled.div`
 
     svg {
         max-width: 1040px;
+        overflow: visible;
+
+        text {
+            font-size: 12px;
+            font-weight: bold;
+        }
     }
 `
 

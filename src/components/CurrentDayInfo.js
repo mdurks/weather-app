@@ -13,11 +13,14 @@ import {
     ContentWrapper,
     ContentHeading,
     ContentValue,
+    WeatherUnit,
+    WindDirection,
 } from './CurrentDayInfo.styls'
+
+import CompassSVG from '../images/compass.svg'
 
 const CurrentDayInfo = ({data, locations, setCurrentLocation}) => {
     const { current_weather, daily_units} = data
-
     const handleSelect = (e) => {
         const locationName = e.target.value
         setCurrentLocation(locations.find(location => location.value === locationName))
@@ -53,9 +56,14 @@ const CurrentDayInfo = ({data, locations, setCurrentLocation}) => {
                 <ContentHeading>Temperature:</ContentHeading>
                 <ContentValue>{current_weather.temperature}{daily_units.temperature_2m_max}</ContentValue>
                 <ContentHeading>Wind speed:</ContentHeading>
-                <ContentValue>{current_weather.windspeed}</ContentValue>
+                <ContentValue>{current_weather.windspeed}<WeatherUnit> km/h</WeatherUnit></ContentValue>
                 <ContentHeading>Wind direction:</ContentHeading>
-                <ContentValue>{current_weather.winddirection}</ContentValue>
+                <WindDirection windDirection={current_weather.winddirection}>
+                    <img
+                        src={CompassSVG}
+                        alt={`Wind direction ${current_weather.winddirection} degrees`}
+                    />
+                </WindDirection>
             </ContentWrapper>
         </CurrentDayInfoWrapper>
     )

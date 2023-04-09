@@ -12,7 +12,6 @@ import { formatDate } from './utilities/dates'
 import './App.css';
 
 function App() {
-
 	const todaysDate = formatDate(new Date())
 	const [selectedDay, setSelectedDay] = useState(todaysDate)
 	const [weatherData, setWeatherData] = useState()
