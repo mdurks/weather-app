@@ -88,6 +88,9 @@ export const LocationSelect = styled.select`
     color: white;
     font-size: 18px;
     text-align: center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 
     ${mediaQuery.min_tablet} {
         padding: 11px 10px;
