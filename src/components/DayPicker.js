@@ -36,7 +36,7 @@ const DayPicker = ({weekData, setWeatherData, setSelectedDay, currentLocation}) 
                     onClick={() => handlePickADay(day, index)}
                     className={selectedButton === index && 'activeButton'}
                 >
-                    <WeatherImg>{weatherCodes[weathercode[index]]}</WeatherImg>
+                    <WeatherImg>{weatherCodes[weathercode[index]].image}</WeatherImg>
                     <DayText>{returnDayName(day)}</DayText>
                     <TemperatureWrapper>
                         <TempHigh>

@@ -1,4 +1,4 @@
-import { weatherCodes, weatherCodesText } from '../utilities/weatherCodes'
+import { weatherCodes } from '../utilities/weatherCodes'
 import { returnDayName, getDateDDMMYYYString } from '../utilities/dates'
 
 import {
@@ -41,7 +41,7 @@ const CurrentDayInfo = ({data, locations, currentLocation, setCurrentLocation}) 
         <CurrentDayInfoWrapper>
             <TitleWrapper>
                 <WeatherIcon>
-                    {weatherCodes[current_weather.weathercode]}
+                    {weatherCodes[current_weather.weathercode].image}
                 </WeatherIcon>
                 <TitleHeading>
                     <TitleDay>{returnDayName(current_weather.time)}</TitleDay>
@@ -88,7 +88,7 @@ const CurrentDayInfo = ({data, locations, currentLocation, setCurrentLocation}) 
             </TitleWrapper>
             <ContentWrapper>
                 <TitleWeatherSummary>
-                    {weatherCodesText[current_weather.weathercode]}
+                    {weatherCodes[current_weather.weathercode].text}
                 </TitleWeatherSummary>
                 <ContentHeading>Temperature:</ContentHeading>
                 <ContentValue>{current_weather.temperature}{daily_units.temperature_2m_max}</ContentValue>

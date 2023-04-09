@@ -1,55 +1,10 @@
-import img_sunny from '../images/sunny.png';
-import img_sunnyToCloudy from '../images/sunny to cloudy.png';
-import img_fog from '../images/fog.png';
-import img_showers from '../images/showers.png';
-import img_heavyRain from '../images/heavy rain.png';
-import img_snow from '../images/snowy.png';
-import img_thunder from '../images/thunder.png';
-
-const clearSky = <img src={img_sunny} alt="" />
-const mainlyClear = <img src={img_sunnyToCloudy} alt="" />
-const fog = <img src={img_fog} alt="" />
-const drizzle = <img src={img_showers} alt="" />
-const freezingDrizzle = <img src={img_showers} alt="" />
-const rain = <img src={img_heavyRain} alt="" />
-const freezingRain = <img src={img_heavyRain} alt="" />
-const snowFall = <img src={img_snow} alt="" />
-const snowGrains = <img src={img_snow} alt="" />
-const rainShowers = <img src={img_showers} alt="" />
-const snowShowers = <img src={img_snow} alt="" />
-const thunderstorm = <img src={img_thunder} alt="" />
-const thunderstormHail = <img src={img_thunder} alt="" />
-
-export const weatherCodes = {
-    0: clearSky,
-    1: mainlyClear,
-    2: mainlyClear,
-    3: mainlyClear,
-    45: fog,
-    48: fog,
-    51: drizzle,
-    53: drizzle,
-    55: drizzle,
-    56: freezingDrizzle,
-    57: freezingDrizzle,
-    61: rain,
-    63: rain,
-    65: rain,
-    66: freezingRain,
-    67: freezingRain,
-    71: snowFall,
-    73: snowFall,
-    75: snowFall,
-    77: snowGrains,
-    80: rainShowers,
-    81: rainShowers,
-    82: rainShowers,
-    85: snowShowers,
-    86: snowShowers,
-    95: thunderstorm,
-    96: thunderstormHail,
-    99: thunderstormHail,
-}
+import png_sunny from '../images/sunny.png';
+import png_sunnyToCloudy from '../images/sunny to cloudy.png';
+import png_fog from '../images/fog.png';
+import png_showers from '../images/showers.png';
+import png_heavyRain from '../images/heavy rain.png';
+import png_snow from '../images/snowy.png';
+import png_thunder from '../images/thunder.png';
 
 const text_clearSky = 'Clear sky'
 const text_mainlyClear = 'Mainly clear, partly cloudy, and overcast'
@@ -65,33 +20,47 @@ const text_snowShowers = 'Snow showers slight and heavy'
 const text_thunderstorm = 'Thunderstorm: Slight or moderate'
 const text_thunderstormHail = 'Thunderstorm with slight and heavy hail'
 
-export const weatherCodesText = {
-    0: text_clearSky,
-    1: text_mainlyClear,
-    2: text_mainlyClear,
-    3: text_mainlyClear,
-    45: text_fog,
-    48: text_fog,
-    51: text_drizzle,
-    53: text_drizzle,
-    55: text_drizzle,
-    56: text_freezingDrizzle,
-    57: text_freezingDrizzle,
-    61: text_rain,
-    63: text_rain,
-    65: text_rain,
-    66: text_freezingRain,
-    67: text_freezingRain,
-    71: text_snowFall,
-    73: text_snowFall,
-    75: text_snowFall,
-    77: text_snowGrains,
-    80: text_rainShowers,
-    81: text_rainShowers,
-    82: text_rainShowers,
-    85: text_snowShowers,
-    86: text_snowShowers,
-    95: text_thunderstorm,
-    96: text_thunderstormHail,
-    99: text_thunderstormHail,
+const img_clearSky = <img src={png_sunny} alt={text_clearSky} />
+const img_mainlyClear = <img src={png_sunnyToCloudy} alt={text_mainlyClear} />
+const img_fog = <img src={png_fog} alt={text_fog} />
+const img_drizzle = <img src={png_showers} alt={text_drizzle} />
+const img_freezingDrizzle = <img src={png_showers} alt={text_freezingDrizzle} />
+const img_rain = <img src={png_heavyRain} alt={text_rain} />
+const img_freezingRain = <img src={png_heavyRain} alt={text_freezingRain} />
+const img_snowFall = <img src={png_snow} alt={text_snowFall} />
+const img_snowGrains = <img src={png_snow} alt={text_snowGrains} />
+const img_rainShowers = <img src={png_showers} alt={text_rainShowers} />
+const img_snowShowers = <img src={png_snow} alt={text_snowShowers} />
+const img_thunderstorm = <img src={png_thunder} alt={text_thunderstorm} />
+const img_thunderstormHail = <img src={png_thunder} alt={text_thunderstormHail} />
+
+export const weatherCodes = {
+    0: { image: img_clearSky, text: text_clearSky },
+    1: { image: img_mainlyClear, text: text_mainlyClear },
+    2: { image: img_mainlyClear, text: text_mainlyClear },
+    3: { image: img_mainlyClear, text: text_mainlyClear },
+    45: { image: img_fog, text: text_fog },
+    48: { image: img_fog, text: text_fog },
+    51: { image: img_drizzle, text: text_drizzle },
+    53: { image: img_drizzle, text: text_drizzle },
+    55: { image: img_drizzle, text: text_drizzle },
+    56: { image: img_freezingDrizzle, text: text_freezingDrizzle },
+    57: { image: img_freezingDrizzle, text: text_freezingDrizzle },
+    61: { image: img_rain, text: text_rain },
+    63: { image: img_rain, text: text_rain },
+    65: { image: img_rain, text: text_rain },
+    66: { image: img_freezingRain, text: text_freezingRain },
+    67: { image: img_freezingRain, text: text_freezingRain },
+    71: { image: img_snowFall, text: text_snowFall },
+    73: { image: img_snowFall, text: text_snowFall },
+    75: { image: img_snowFall, text: text_snowFall },
+    77: { image: img_snowGrains, text: text_snowGrains },
+    80: { image: img_rainShowers, text: text_rainShowers },
+    81: { image: img_rainShowers, text: text_rainShowers },
+    82: { image: img_rainShowers, text: text_rainShowers },
+    85: { image: img_snowShowers, text: text_snowShowers },
+    86: { image: img_snowShowers, text: text_snowShowers },
+    95: { image: img_thunderstorm, text: text_thunderstorm },
+    96: { image: img_thunderstormHail, text: text_thunderstormHail },
+    99: { image: img_thunderstormHail, text: text_thunderstormHail },
 }
