@@ -15,12 +15,13 @@ function App() {
 	const todaysDate = formatDate(new Date())
 	const [selectedDay, setSelectedDay] = useState(todaysDate)
 	const [weatherData, setWeatherData] = useState()
+	const [weatherDayData, setWeatherDayData] = useState()
 	const [weatherWeekData, setWeatherWeekData] = useState()
     const [currentLocation, setCurrentLocation] = useState(locations[0])
 
 	useEffect(() => {
 		getWeatherData(new Date(), setWeatherData, setWeatherWeekData, currentLocation)
-		getWeatherDayData(selectedDay, setWeatherData, currentLocation)
+		getWeatherDayData(selectedDay, setWeatherDayData, currentLocation)
 	}, [currentLocation, selectedDay])
 
 	return (
@@ -43,16 +44,16 @@ function App() {
 					currentLocation={currentLocation}
 				/>
 			)}
-			{weatherData && (
+			{weatherDayData && (
 				<LineChart
 					key={selectedDay}
-					data={weatherData.data}
+					data={weatherDayData.data}
 				/>
 			)}
-			{weatherData && (
+			{weatherDayData && (
 				<SelectedDayInfo
-					key={`SelectedDayInfo${weatherData}`}
-					dayData={weatherData.data}
+					key={`SelectedDayInfo${weatherDayData}`}
+					dayData={weatherDayData.data}
 				/>
 			)}
 		</>

@@ -24,7 +24,7 @@ export const ContentWrapper = styled.div`
     }
 
     svg {
-        margin: 50px 0;
+        margin: 25px 0 50px;
 
         ${mediaQuery.min_tablet} {
             margin: -70px 15px 60px;
@@ -71,11 +71,13 @@ export const SvgWrapper = styled.div`
 `
 
 export const DetailsItem = styled.p`
+    margin-top: 20px;
     margin-bottom: 0;
     font-size: 45px;
     font-weight: bold;
 
     ${mediaQuery.min_tablet} {
+        margin-top: 43px;
         margin-bottom: 40px;
     }
 `
