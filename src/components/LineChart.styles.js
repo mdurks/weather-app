@@ -65,5 +65,11 @@ export const Tooltip = styled(motion.div)`
         justify-content: space-between;
         margin: 7px 0;
     }
+
+    small {
+        display: block;
+        text-align: center;
+        font-weight: normal;
+    }
 `
 

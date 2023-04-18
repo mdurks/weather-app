@@ -13,6 +13,8 @@ const ChartInner = ({ data }) => {
 	const { hourly } = data
 	const { temperature_2m, relativehumidity_2m, precipitation_probability, time } = hourly
 
+	const [isTablet, setIsTablet] = useState(true)
+
 	const svgOpt = {
 		width: 1040,
 		height: 270,
@@ -24,13 +26,13 @@ const ChartInner = ({ data }) => {
 		},
 		strokeColour: ["white", "#33eb33", "yellow"],
 		fillColour: ["white", "#33eb33", "yellow"],
+		chartCircleSize: isTablet ? "6" : "3.5",
+		chartCircleSizeActive: isTablet ? "20" : "9",
 	}
 
 	svgOpt.innerWidth = svgOpt.width - svgOpt.margin.left - svgOpt.margin.right
 
-	const [isTablet, setIsTablet] = useState(true)
-
-	const [toolTipVisible, setToolTipVisible] = useState(false)
+	const [toolTipVisible, setToolTipVisible] = useState(isTablet ? true : false)
 	const [toolTipHour, setToolTipHour] = useState()
 	const [toolTipTemp, setToolTipTemp] = useState()
 	const [toolTipHumidity, setToolTipHumidity] = useState()
@@ -41,6 +43,7 @@ const ChartInner = ({ data }) => {
 
 	let hoverRectangleLocations = [0]
 	const [touchedRectanglePrevious, setTouchedRectanglePrevious] = useState(0)
+
 
 
 
@@ -146,19 +149,19 @@ const ChartInner = ({ data }) => {
 		setToolTipTemp(hourlyTempData[hour].temperature)
 		setToolTipHumidity(hourlyHumidityData[hour].humidity)
 		setToolTipRainChance(hourlyPChanceData[hour].pChance)
-		document.getElementById('tempCircles').children[hour].setAttribute('r', isTablet ? "20" : "9")
-		document.getElementById('humidityCircles').children[hour].setAttribute('r', isTablet ? "20" : "9")
-		document.getElementById('pChanceCircles').children[hour].setAttribute('r', isTablet ? "20" : "9")
+		document.getElementById('tempCircles').children[hour].setAttribute('r', svgOpt.chartCircleSizeActive)
+		document.getElementById('humidityCircles').children[hour].setAttribute('r', svgOpt.chartCircleSizeActive)
+		document.getElementById('pChanceCircles').children[hour].setAttribute('r', svgOpt.chartCircleSizeActive)
 	}
 
 	const resetChartCircles = (hour) => {
-		document.getElementById('tempCircles').children[hour].setAttribute('r', "3")
-		document.getElementById('humidityCircles').children[hour].setAttribute('r', "3")
-		document.getElementById('pChanceCircles').children[hour].setAttribute('r', "3")
+		document.getElementById('tempCircles').children[hour].setAttribute('r', svgOpt.chartCircleSize)
+		document.getElementById('humidityCircles').children[hour].setAttribute('r', svgOpt.chartCircleSize)
+		document.getElementById('pChanceCircles').children[hour].setAttribute('r', svgOpt.chartCircleSize)
 	}
 
 	const mouseOverHour = (hour) => setHourOnChart(hour)
-	const mouseOutHour = (hour) => resetChartCircles(hour)
+	const mouseOutHour = (hour) => !isTablet && resetChartCircles(hour)
 
 	const moveToolTip = (e) => {
 		const svgLeftPos = document.getElementById('lineChartSVG').getBoundingClientRect().left
@@ -177,6 +180,10 @@ const ChartInner = ({ data }) => {
 			setHourOnChart(touchedRectangle)
 		}
 	}
+
+	useEffect(() => {
+		if(window.innerWidth < 768) mouseOverHour(12)
+	}, [])
 
 	useEffect(() => {
 		if (window.innerWidth > 768) {
@@ -235,7 +242,7 @@ const ChartInner = ({ data }) => {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							transition={{ duration: 0.15, delay: 0.05 * index }}
-							r="3"
+							r={svgOpt.chartCircleSize}
 							cx={xScale(time.date)}
 							cy={yScale(time.temperature)}
 							fill={svgOpt.fillColour[0]}
@@ -262,7 +269,7 @@ const ChartInner = ({ data }) => {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							transition={{ duration: 0.15, delay: 0.05 * index }}
-							r="3"
+							r={svgOpt.chartCircleSize}
 							cx={xScaleHumidity(time.date)}
 							cy={yScaleHumidity(time.humidity)}
 							fill={svgOpt.fillColour[1]}
@@ -290,7 +297,7 @@ const ChartInner = ({ data }) => {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							transition={{ duration: 0.15, delay: 0.05 * index }}
-							r="3"
+							r={svgOpt.chartCircleSize}
 							cx={xScalePChance(time.date)}
 							cy={yScalePChance(time.pChance)}
 							fill={svgOpt.fillColour[2]}
@@ -325,7 +332,6 @@ const ChartInner = ({ data }) => {
 					}
 				</g>
 			</svg>
-
 			{toolTipVisible && (
 				<Tooltip
 					initial={{ opacity: 0 }}
@@ -335,6 +341,7 @@ const ChartInner = ({ data }) => {
 						left: `${toolTipX}px`,
 						top: `${toolTipY}px`,
 				}}>
+					{isTablet && (<small>Tap chart for stats</small>)}
 					{isTablet && (
 						<p style={{ color: "#b4e6ff"}}>Hour : <span>{toolTipHour}:00</span></p>
 					)}
@@ -343,7 +350,6 @@ const ChartInner = ({ data }) => {
 					<p style={{ color: svgOpt.fillColour[1]}}>Humidity : <span>{toolTipHumidity}%</span></p>
 				</Tooltip>
 			)}
-			{!toolTipVisible && isTablet && (<p>Click chart for stats</p>)}
 		</LineChartWrapper>
 	)
 }
