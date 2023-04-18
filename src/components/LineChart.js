@@ -313,9 +313,13 @@ const ChartInner = ({ data }) => {
 			</svg>
 
 			{toolTipVisible && (
-				<Tooltip style={{
-					left: `${toolTipX}px`,
-					top: `${toolTipY}px`,
+				<Tooltip
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
+					style={{
+						left: `${toolTipX}px`,
+						top: `${toolTipY}px`,
 				}}>
 					{isTablet && (
 						<p style={{ color: svgOpt.fillColour[0]}}>Hour : <span>{toolTipHour}:00</span></p>

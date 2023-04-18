@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { mediaQuery } from "../utilities/mediaQueries"
+import { motion } from "framer-motion";
 
 export const LineChartWrapper = styled.div`
     width: 100%;
@@ -40,7 +41,7 @@ export const Heading = styled.h2`
     }
 `
 
-export const Tooltip = styled.div`
+export const Tooltip = styled(motion.div)`
     margin: 0 0 10px;
     padding: 15px 26px 18px;
     width: 100%;
