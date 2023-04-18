@@ -28,6 +28,21 @@ const ChartInner = ({ data }) => {
 
 	svgOpt.innerWidth = svgOpt.width - svgOpt.margin.left - svgOpt.margin.right
 
+	const [isTablet, setIsTablet] = useState(true)
+
+	const [toolTipVisible, setToolTipVisible] = useState(false)
+	const [toolTipHour, setToolTipHour] = useState()
+	const [toolTipTemp, setToolTipTemp] = useState()
+	const [toolTipHumidity, setToolTipHumidity] = useState()
+	const [toolTipRainChance, setToolTipRainChance] = useState()
+
+	const [toolTipX, setToolTipX] = useState()
+	const [toolTipY, setToolTipY] = useState()
+
+	let hoverRectangleLocations = [0]
+	const [touchedRectanglePrevious, setTouchedRectanglePrevious] = useState(0)
+
+
 
 	// Temperature:
 
@@ -123,32 +138,27 @@ const ChartInner = ({ data }) => {
 	let lineDataPChance = linePChance(hourlyPChanceData)
 
 
-	const [toolTipVisible, setToolTipVisible] = useState(false)
-	const [toolTipHour, setToolTipHour] = useState()
-	const [toolTipTemp, setToolTipTemp] = useState()
-	const [toolTipHumidity, setToolTipHumidity] = useState()
-	const [toolTipRainChance, setToolTipRainChance] = useState()
-
-
-	const mouseOverHour = (hour) => {
+	const setHourOnChart = (hour) => {
+		setTouchedRectanglePrevious(hour)
+		resetChartCircles(touchedRectanglePrevious)
 		setToolTipVisible(true)
 		setToolTipHour(hour)
 		setToolTipTemp(hourlyTempData[hour].temperature)
 		setToolTipHumidity(hourlyHumidityData[hour].humidity)
 		setToolTipRainChance(hourlyPChanceData[hour].pChance)
-		document.getElementById('tempCircles').children[hour].setAttribute('r', "9")
-		document.getElementById('humidityCircles').children[hour].setAttribute('r', "9")
-		document.getElementById('pChanceCircles').children[hour].setAttribute('r', "9")
+		document.getElementById('tempCircles').children[hour].setAttribute('r', isTablet ? "20" : "9")
+		document.getElementById('humidityCircles').children[hour].setAttribute('r', isTablet ? "20" : "9")
+		document.getElementById('pChanceCircles').children[hour].setAttribute('r', isTablet ? "20" : "9")
 	}
 
-	const mouseOutHour = (hour) => {
+	const resetChartCircles = (hour) => {
 		document.getElementById('tempCircles').children[hour].setAttribute('r', "3")
 		document.getElementById('humidityCircles').children[hour].setAttribute('r', "3")
 		document.getElementById('pChanceCircles').children[hour].setAttribute('r', "3")
 	}
 
-	const [toolTipX, setToolTipX] = useState()
-	const [toolTipY, setToolTipY] = useState()
+	const mouseOverHour = (hour) => setHourOnChart(hour)
+	const mouseOutHour = (hour) => resetChartCircles(hour)
 
 	const moveToolTip = (e) => {
 		const svgLeftPos = document.getElementById('lineChartSVG').getBoundingClientRect().left
@@ -158,7 +168,15 @@ const ChartInner = ({ data }) => {
 		setToolTipY(e.clientY - 50)
 	}
 
-	const [isTablet, setIsTablet] = useState(true)
+	const touchOver = (e) => {
+		resetChartCircles(touchedRectanglePrevious)
+		const touchX = e.touches[0].clientX - (svgOpt.margin.left)
+		const touchedRectangle = hoverRectangleLocations.findIndex((item, index) => item > touchX)
+		if (touchedRectangle >= 0) {
+			setTouchedRectanglePrevious(touchedRectangle)
+			setHourOnChart(touchedRectangle)
+		}
+	}
 
 	useEffect(() => {
 		if (window.innerWidth > 768) {
@@ -166,6 +184,14 @@ const ChartInner = ({ data }) => {
 			setToolTipVisible(false)
 		}
 	}, [isTablet])
+
+	useEffect(() => {
+		const hoverRectangleWidth = Math.round(document.getElementById('hoverRectangles').children[0].getBoundingClientRect().width)
+		for (let i = 1; i < 24; i++) {
+			hoverRectangleLocations[i] = hoverRectangleWidth + hoverRectangleLocations[i-1]
+		}
+	})
+
 
 	return (
 		<LineChartWrapper>
@@ -188,6 +214,7 @@ const ChartInner = ({ data }) => {
 				viewBox={`0 0 ${svgOpt.width} ${svgOpt.height}`}
 				onMouseOut={() => !isTablet && setToolTipVisible(false)}
 				onMouseMove={(e) => moveToolTip(e)}
+				onTouchMove={(e) => touchOver(e)}
 			>
 
 				{/* Temperature: */}
@@ -215,19 +242,6 @@ const ChartInner = ({ data }) => {
 						/>
 					))}
 				</g>
-
-				{/* label text: */}
-				{/* <motion.text
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ duration: 0.15, delay: 0.05 * index }}
-					x={xScale(time.date)}
-					y={yScale(time.temperature) - 20}
-					fill={svgOpt.fillColour[0]}
-					textAnchor='middle'
-				>
-					{hourlyTempData[index].temperature}
-				</motion.text> */}
 
 
 				{/* Humidity: */}
@@ -285,7 +299,7 @@ const ChartInner = ({ data }) => {
 				</g>
 
 				{/* Hover rectangle for tooltip */}
-				<g>
+				<g id="hoverRectangles">
 					{hourlyTempData.map((time, index) => {
 						return (
 							<g key={index+time+'hoverRectangle'}>
@@ -322,7 +336,7 @@ const ChartInner = ({ data }) => {
 						top: `${toolTipY}px`,
 				}}>
 					{isTablet && (
-						<p style={{ color: svgOpt.fillColour[0]}}>Hour : <span>{toolTipHour}:00</span></p>
+						<p style={{ color: "#b4e6ff"}}>Hour : <span>{toolTipHour}:00</span></p>
 					)}
 					<p style={{ color: svgOpt.fillColour[0]}}>Temperature : <span>{toolTipTemp}°C</span></p>
 					<p style={{ color: svgOpt.fillColour[2]}}>Rain Chance : <span>{toolTipRainChance}%</span></p>
