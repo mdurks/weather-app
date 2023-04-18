@@ -202,21 +202,19 @@ const ChartInner = ({ data }) => {
 
 	return (
 		<LineChartWrapper>
-			{!isTablet && (
-				<Heading>
-					<span style={{ color: svgOpt.fillColour[0]}}>
-						Hourly: Temperature
-					</span>
-					&nbsp;/&nbsp;
-					<span style={{ color: svgOpt.fillColour[1]}}>
-						Humidity
-					</span>
-					&nbsp;/&nbsp;
-					<span style={{ color: svgOpt.fillColour[2]}}>
-						Rain Chance:
-					</span>
-				</Heading>
-			)}
+			<Heading>
+				<span style={{ color: svgOpt.fillColour[0]}}>
+					Hourly: Temperature
+				</span>
+				&nbsp;/&nbsp;
+				<span style={{ color: svgOpt.fillColour[1]}}>
+					Humidity
+				</span>
+				&nbsp;/&nbsp;
+				<span style={{ color: svgOpt.fillColour[2]}}>
+					Rain Chance
+				</span>
+			</Heading>
 
 			<svg
 				id="lineChartSVG"
@@ -281,17 +279,15 @@ const ChartInner = ({ data }) => {
 
 				{/* Precipitation Chance: */}
 
-				{precipitation_probability && (
-					<motion.path
-						initial={{ pathLength: 0 }}
-						animate={{ pathLength: 1 }}
-						transition={{ duration: 1, delay: 0.4 }}
-						d={lineDataPChance}
-						fill="none"
-						stroke={svgOpt.strokeColour[2]}
-						strokeWidth="2"
-					/>
-				)}
+				<motion.path
+					initial={{ pathLength: 0 }}
+					animate={{ pathLength: 1 }}
+					transition={{ duration: 1, delay: 0.4 }}
+					d={lineDataPChance}
+					fill="none"
+					stroke={svgOpt.strokeColour[2]}
+					strokeWidth="2"
+				/>
 				<g id="pChanceCircles">
 					{hourlyPChanceData.map((time, index) => (
 						<motion.circle
@@ -343,10 +339,8 @@ const ChartInner = ({ data }) => {
 						left: `${toolTipX}px`,
 						top: `${toolTipY}px`,
 				}}>
-					{isTablet && (<small>Tap chart for hourly stats</small>)}
-					{isTablet && (
-						<p style={{ color: "#b4e6ff"}}>Hour : <span>{toolTipHour}:00</span></p>
-					)}
+					{isTablet && (<small>Tap chart for stats</small>)}
+					<p style={{ color: "#b4e6ff"}}>Hour : <span>{toolTipHour}:00</span></p>
 					<p style={{ color: svgOpt.fillColour[0]}}>Temperature : <span>{toolTipTemp}°C</span></p>
 					<p style={{ color: svgOpt.fillColour[2]}}>Rain Chance : <span>{toolTipRainChance}%</span></p>
 					<p style={{ color: svgOpt.fillColour[1]}}>Humidity : <span>{toolTipHumidity}%</span></p>

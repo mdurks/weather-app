@@ -32,8 +32,8 @@ export const LineChartWrapper = styled.div`
 `
 
 export const Heading = styled.h2`
-    margin: 20px 0;
-    font-size: 25px;
+    margin: 5px 0 20px;
+    font-size: 20px;
     word-break: break-word;
 
     ${mediaQuery.min_tablet} {
