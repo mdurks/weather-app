@@ -202,19 +202,21 @@ const ChartInner = ({ data }) => {
 
 	return (
 		<LineChartWrapper>
-			<Heading>
-				<span style={{ color: svgOpt.fillColour[0]}}>
-					Temperature
-				</span>
-				  &nbsp;/&nbsp;
-				<span style={{ color: svgOpt.fillColour[1]}}>
-				 	Humidity
-				</span>
-				   &nbsp;/&nbsp;
-				<span style={{ color: svgOpt.fillColour[2]}}>
-				 	Rain Chance:
-				</span>
-			</Heading>
+			{!isTablet && (
+				<Heading>
+					<span style={{ color: svgOpt.fillColour[0]}}>
+						Hourly: Temperature
+					</span>
+					&nbsp;/&nbsp;
+					<span style={{ color: svgOpt.fillColour[1]}}>
+						Humidity
+					</span>
+					&nbsp;/&nbsp;
+					<span style={{ color: svgOpt.fillColour[2]}}>
+						Rain Chance:
+					</span>
+				</Heading>
+			)}
 
 			<svg
 				id="lineChartSVG"
@@ -341,7 +343,7 @@ const ChartInner = ({ data }) => {
 						left: `${toolTipX}px`,
 						top: `${toolTipY}px`,
 				}}>
-					{isTablet && (<small>Tap chart for stats</small>)}
+					{isTablet && (<small>Tap chart for hourly stats</small>)}
 					{isTablet && (
 						<p style={{ color: "#b4e6ff"}}>Hour : <span>{toolTipHour}:00</span></p>
 					)}

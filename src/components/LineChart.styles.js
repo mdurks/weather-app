@@ -13,10 +13,15 @@ export const LineChartWrapper = styled.div`
     }
 
     svg {
+        margin: 5px 0 15px;
         max-width: 1040px;
         overflow: visible;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
+
+        ${mediaQuery.min_tablet} {
+            margin: 0;
+        }
 
         text {
             font-size: 12px;
