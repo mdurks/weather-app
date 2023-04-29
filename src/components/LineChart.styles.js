@@ -16,7 +16,6 @@ export const LineChartWrapper = styled.div`
         margin: 5px 0 15px;
         max-width: 1040px;
         overflow: visible;
-        cursor: pointer;
         -webkit-tap-highlight-color: transparent;
 
         ${mediaQuery.min_tablet} {
@@ -40,10 +39,11 @@ export const Heading = styled.h2`
         margin: 0 0 20px;
         font-size: 35px;
     }
+`
 
-    span {
-        display: inline-block;
-    }
+export const HeadingItem = styled.span`
+    display: inline-block;
+    color: ${props => props.color ? props.color : "white"};
 `
 
 export const Tooltip = styled(motion.div)`
