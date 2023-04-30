@@ -8,6 +8,7 @@ import {
 	Heading,
 	HeadingItem,
 	Tooltip,
+	TooltipItem,
 } from './LineChart.styles'
 
 const ChartInner = ({ data }) => {
@@ -15,6 +16,17 @@ const ChartInner = ({ data }) => {
 	const { temperature_2m, relativehumidity_2m, precipitation_probability, time } = hourly
 
 	const [isTablet, setIsTablet] = useState(true)
+
+	const [toolTipVisible, setToolTipVisible] = useState(isTablet ? true : false)
+	const [toolTipHour, setToolTipHour] = useState()
+	const [toolTipTemp, setToolTipTemp] = useState()
+	const [toolTipHumidity, setToolTipHumidity] = useState()
+	const [toolTipRainChance, setToolTipRainChance] = useState()
+	const [toolTipX, setToolTipX] = useState()
+	const [toolTipY, setToolTipY] = useState()
+
+	let hoverRectangleLocations = [0]
+	const [touchedRectanglePrevious, setTouchedRectanglePrevious] = useState(0)
 
 	const svgOpt = {
 		width: 1040,
@@ -26,71 +38,45 @@ const ChartInner = ({ data }) => {
 			bottom: 120,
 			left: 30,
 		},
-		strokecolor: ["white", "#33eb33", "yellow"],
-		fillcolor: ["white", "#33eb33", "yellow"],
-		chartCircleSize: isTablet ? "6" : "3.5",
+		strokecolor: ["white", "#33eb33", "yellow", "#b4e6ff"],
+		fillcolor: ["white", "#33eb33", "yellow", "#b4e6ff"],
+		chartCircleSize: isTablet ? "6" : "4",
 		chartCircleSizeActive: isTablet ? "20" : "9",
 	}
 
 	svgOpt.innerWidth = svgOpt.width - svgOpt.margin.left - svgOpt.margin.right
 
-	const [toolTipVisible, setToolTipVisible] = useState(isTablet ? true : false)
-	const [toolTipHour, setToolTipHour] = useState()
-	const [toolTipTemp, setToolTipTemp] = useState()
-	const [toolTipHumidity, setToolTipHumidity] = useState()
-	const [toolTipRainChance, setToolTipRainChance] = useState()
-
-	const [toolTipX, setToolTipX] = useState()
-	const [toolTipY, setToolTipY] = useState()
-
-	let hoverRectangleLocations = [0]
-	const [touchedRectanglePrevious, setTouchedRectanglePrevious] = useState(0)
-
 	const hoverRectangleWidth = (svgOpt.innerWidth / temperature_2m.length) + 2
 
-
-
 	// Chart Refs:
-	// ----------------------------------
 
-	const tempCirclesRef = useRef(null);
-	const humidityCirclesRef = useRef(null);
-	const pChanceCirclesRef = useRef(null);
-
-
+	const temperatureRef = useRef(null);
+	const humidityRef = useRef(null);
+	const pChanceRef = useRef(null);
+	const hoverRectanglesRef = useRef(null);
+	const lineChartSVGRef = useRef(null);
 
 	// Weather Charts Line Data:
-	// ----------------------------------
 
-	let hourlyTempData = arrayOfWeatherAndTimeObjs(temperature_2m, time, 'temperature')
-	let hourlyHumidityData = arrayOfWeatherAndTimeObjs(relativehumidity_2m, time, 'humidity')
-	let hourlyPChanceData = arrayOfWeatherAndTimeObjs(precipitation_probability, time, 'pChance')
+	const hourlyTempData = arrayOfWeatherAndTimeObjs(temperature_2m, time, 'temperature')
+	const hourlyHumidityData = arrayOfWeatherAndTimeObjs(relativehumidity_2m, time, 'humidity')
+	const hourlyPChanceData = arrayOfWeatherAndTimeObjs(precipitation_probability, time, 'pChance')
 
-
-
-	// Chart x scale:
-	// ----------------------------------
-
-	let xScale = d3
+	const chartXScale = d3
 		.scaleLinear()
 		.domain([hourlyTempData[0].date, hourlyTempData.at(-1).date])
 		.range([svgOpt.margin.left, svgOpt.width - svgOpt.margin.right])
 
-
-
 	// Define Charts to show:
-	// ----------------------------------
 
 	const lineCharts = [
-		{ id: "tempCircles", data: temperature_2m, xScale, ref: tempCirclesRef },
-		{ id: "humidityCircles", data: relativehumidity_2m, xScale, ref: humidityCirclesRef },
-		{ id: "pChanceCircles", data: precipitation_probability, xScale, ref: pChanceCirclesRef },
+		{ id: "temperature", data: temperature_2m, chartXScale, ref: temperatureRef },
+		{ id: "humidity", data: relativehumidity_2m, chartXScale, ref: humidityRef },
+		{ id: "pChance", data: precipitation_probability, chartXScale, ref: pChanceRef },
 	]
 
 
-
 	// Functions:
-	// ----------------------------------
 
 	const setHourOnChart = (hour) => {
 		setTouchedRectanglePrevious(hour)
@@ -117,7 +103,7 @@ const ChartInner = ({ data }) => {
 	const mouseOutHour = (hour) => !isTablet && resetChartCircles(hour)
 
 	const moveToolTip = (e) => {
-		const svgLeftPos = document.getElementById('lineChartSVG').getBoundingClientRect().left
+		const svgLeftPos = lineChartSVGRef.current.getBoundingClientRect().left
 		const mouseToSvgOffset = e.clientX - svgLeftPos
 		if (mouseToSvgOffset < 320) setToolTipX(e.clientX + 70)
 		else setToolTipX(e.clientX - 280)
@@ -127,7 +113,7 @@ const ChartInner = ({ data }) => {
 	const touchOver = (e) => {
 		resetChartCircles(touchedRectanglePrevious)
 		const touchX = e.touches[0].clientX - (svgOpt.margin.left)
-		const touchedRectangle = hoverRectangleLocations.findIndex((item, index) => item > touchX)
+		const touchedRectangle = hoverRectangleLocations.findIndex(item => item > touchX)
 		if (touchedRectangle >= 0) {
 			setTouchedRectanglePrevious(touchedRectangle)
 			setHourOnChart(touchedRectangle)
@@ -135,9 +121,7 @@ const ChartInner = ({ data }) => {
 	}
 
 
-
 	// Effects:
-	// ----------------------------------
 
 	useEffect(() => {
 		if(window.innerWidth < 768) mouseOverHour(12)
@@ -151,7 +135,9 @@ const ChartInner = ({ data }) => {
 	}, [isTablet])
 
 	useEffect(() => {
-		const hoverRectangleWidth = Math.round(document.getElementById('hoverRectangles').children[0].getBoundingClientRect().width)
+		const hoverRectangleWidth = Math.round(
+			hoverRectanglesRef.current.children[0].getBoundingClientRect().width
+		)
 		for (let i = 1; i < 24; i++) {
 			hoverRectangleLocations[i] = hoverRectangleWidth + hoverRectangleLocations[i-1]
 		}
@@ -166,7 +152,7 @@ const ChartInner = ({ data }) => {
 			</Heading>
 
 			<svg
-				id="lineChartSVG"
+				ref={lineChartSVGRef}
 				viewBox={`0 0 ${svgOpt.width} ${svgOpt.height}`}
 				onMouseOut={() => !isTablet && setToolTipVisible(false)}
 				onMouseMove={(e) => moveToolTip(e)}
@@ -182,19 +168,19 @@ const ChartInner = ({ data }) => {
 						data={chart.data}
 						count={index}
 						refValue={chart.ref}
-						xScale={chart.xScale}
+						chartXScale={chart.chartXScale}
 					/>
 				))}
 
-				<g id="hoverRectangles">
+				<g ref={hoverRectanglesRef}>
 					{hourlyTempData.map((time, index) => {
 						return (
-							<g key={index+time+'hoverRectangle'}>
-								{/* Rectangle to catch hover/touch event for tooltip */}
+							<g key={`${index}hoverRectangle`}>
+								{/* Rectangle to catch hover event for tooltip */}
 								<rect
 									width={hoverRectangleWidth}
 									height="100%"
-									x={xScale(time.date) - (hoverRectangleWidth / 2)}
+									x={chartXScale(time.date) - (hoverRectangleWidth / 2)}
 									y="0"
 									fill="#ffffff00"
 									onMouseOver={() => mouseOverHour(index)}
@@ -202,7 +188,7 @@ const ChartInner = ({ data }) => {
 								/>
 								{/* Hour number on X axis */}
 								<text
-									x={xScale(time.date)}
+									x={chartXScale(time.date)}
 									y={svgOpt.height - 20}
 									fill={svgOpt.fillcolor[0]}
 									textAnchor='middle'
@@ -225,10 +211,18 @@ const ChartInner = ({ data }) => {
 						top: `${toolTipY}px`,
 				}}>
 					{isTablet && (<small>Tap chart for stats</small>)}
-					<p style={{ color: "#b4e6ff"}}>Hour : <span>{toolTipHour}:00</span></p>
-					<p style={{ color: svgOpt.fillcolor[0]}}>Temperature : <span>{toolTipTemp}°C</span></p>
-					<p style={{ color: svgOpt.fillcolor[2]}}>Rain Chance : <span>{toolTipRainChance}%</span></p>
-					<p style={{ color: svgOpt.fillcolor[1]}}>Humidity : <span>{toolTipHumidity}%</span></p>
+					<TooltipItem color={svgOpt.fillcolor[3]}>
+						Hour : <span>{toolTipHour}:00</span>
+					</TooltipItem>
+					<TooltipItem color={svgOpt.fillcolor[0]}>
+						Temperature : <span>{toolTipTemp}°C</span>
+					</TooltipItem>
+					<TooltipItem color={svgOpt.fillcolor[2]}>
+						Rain Chance : <span>{toolTipRainChance}%</span>
+					</TooltipItem>
+					<TooltipItem color={svgOpt.fillcolor[1]}>
+						Humidity : <span>{toolTipHumidity}%</span>
+					</TooltipItem>
 				</Tooltip>
 			)}
 		</LineChartWrapper>

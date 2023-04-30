@@ -1,24 +1,26 @@
-import { motion } from "framer-motion";
 import * as d3 from "d3";
+import { motion } from "framer-motion";
 import { arrayOfWeatherAndTimeObjs } from "../utilities/formatWeatherData";
 
-export const LinePath = ({svgOpt, time, data, count, refValue, xScale }) => {
+export const LinePath = ({svgOpt, time, data, count, refValue, chartXScale }) => {
 
-	let weatherData = arrayOfWeatherAndTimeObjs(data, time, 'weatherValue')
+	const weatherData = arrayOfWeatherAndTimeObjs(data, time, 'weatherValue')
 
-	let yScale = d3
+	const chartYScale = d3
 		.scaleLinear()
-		// use d3 function to get min/max values
-		.domain(d3.extent(weatherData.map(d => d.weatherValue)))
-		// flip height and starting value around to fix origin problem
+		// domain = min/max of weather values
+        // uses d3 extent to find those values for us
+		.domain(d3.extent(weatherData.map(item => item.weatherValue)))
+        // range = min/max of SVG dimensions
+		// flip height and starting value around so chart Y position is at the bottom, not the top
 		.range([svgOpt.height - svgOpt.margin.bottom, svgOpt.margin.top])
 
-	let line = d3
+	const line = d3
 		.line()
-		.x(d => xScale(d.date))
-		.y(d => yScale(d.weatherValue))
+		.x(item => chartXScale(item.date))
+		.y(item => chartYScale(item.weatherValue))
 
-	let lineData = line(weatherData)
+	const lineData = line(weatherData)
 
     return (
         <g>
@@ -39,8 +41,8 @@ export const LinePath = ({svgOpt, time, data, count, refValue, xScale }) => {
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.15, delay: 0.05 * index }}
                         r={svgOpt.chartCircleSize}
-                        cx={xScale(time.date)}
-                        cy={yScale(time.weatherValue)}
+                        cx={chartXScale(time.date)}
+                        cy={chartYScale(time.weatherValue)}
                         fill={svgOpt.fillcolor[count]}
                     />
                 ))}

@@ -28,7 +28,7 @@ function App() {
 		<>
 			{weatherData && (
 				<CurrentDayInfo
-					key={`CurrentDayInfo${weatherData}`}
+					key={`CurrentDayInfo${selectedDay}`}
 					data={weatherData.data}
 					locations={locations}
 					currentLocation={currentLocation}
@@ -37,7 +37,7 @@ function App() {
 			)}
 			{weatherWeekData && (
 				<DayPicker
-					key={`DayPicker${weatherWeekData}`}
+					key={`DayPicker${selectedDay}`}
 					weekData={weatherWeekData.data}
 					setWeatherData={setWeatherData}
 					setSelectedDay={setSelectedDay}
@@ -46,18 +46,18 @@ function App() {
 			)}
 			{weatherDayData && (
 				<LineChart
-					key={selectedDay}
+					key={`LineChart${selectedDay}`}
 					data={weatherDayData.data}
 				/>
 			)}
 			{weatherDayData && (
 				<SelectedDayInfo
-					key={`SelectedDayInfo${weatherDayData}`}
+					key={`SelectedDayInfo${selectedDay}`}
 					dayData={weatherDayData.data}
 				/>
 			)}
 		</>
-	);
+	)
 }
 
 export default App;

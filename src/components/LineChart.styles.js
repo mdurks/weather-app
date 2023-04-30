@@ -65,12 +65,6 @@ export const Tooltip = styled(motion.div)`
         pointer-events: none;
     }
 
-    p {
-        display: flex;
-        justify-content: space-between;
-        margin: 7px 0;
-    }
-
     small {
         display: block;
         text-align: center;
@@ -78,3 +72,9 @@ export const Tooltip = styled(motion.div)`
     }
 `
 
+export const TooltipItem = styled.p`
+    display: flex;
+    justify-content: space-between;
+    margin: 7px 0;
+    color: ${props => props.color ? props.color : "white"};
+`
